@@ -5,12 +5,12 @@ import Navber from './Navber'
 
 const Layout = () => {
   return (
-    <div className="container_item">
-    <div className='px-5'>
-
-        <Navber/>
+    
+    <div className=''>
+      <div className="container_item px-4">
+          <Navber/>
+        </div>
         <Outlet/>
-      </div>
     </div>
   )
 }
