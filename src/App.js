@@ -10,8 +10,19 @@ import LayoutOwner from "./component/LayoutOwner";
 import SingalPlace from "./page/SingalPlace";
 import Dashboard from "./page/Dashboard";
 import OwnerPro from "./page/OwnerPro";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {getProfileData} from "./services/auth/authSlice"
+import Hotel from "./page/Hotel";
 
 function App() {
+  const dispatch = useDispatch()
+
+
+  useEffect(()=>{
+    dispatch(getProfileData())
+  },[])
+
   return (
     <div className="">
         <Routes>
@@ -25,6 +36,7 @@ function App() {
             </Route>
             <Route path="/owner" element={<LayoutOwner/>}>
               <Route index element={<Dashboard/>}/>
+              <Route path="/owner/hotel" element={<Hotel/>}/>
               <Route path="/owner/add" element={<PlacesFormPage/>}/>
               <Route path="/owner/user" element={<OwnerPro/>}/>
             </Route>

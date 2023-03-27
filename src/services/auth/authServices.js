@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { config } from "../../utils/axiosconfig";
+import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 
@@ -20,10 +20,24 @@ const login = async (data) => {
   return response.data;
 };
 
+const getProfile = async () => {
+  const response = await axios.get(`${base_url}/user/profile-data`,config);
+  return response.data.data;
+};
+
+
+const updateProfile = async(data) =>{
+  const response = await axios.patch(`${base_url}/user/update`,data,config);
+  console.log(response.status)
+  return response.data.data;
+}
+
 
 const authService = {
   login,
-  regester
+  regester,
+  getProfile,
+  updateProfile,
 };
 
 export default authService;

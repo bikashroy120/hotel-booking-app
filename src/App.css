@@ -55,6 +55,7 @@ img {
 
 .dashboard {
   margin-top: 100px;
+  margin-bottom: 30px;
   padding: 20px 30px;
   background: rgb(191, 187, 187);
   border-radius: 16px;
@@ -64,6 +65,11 @@ img {
 input[type="text"]{
   margin-top: 0;
   margin-bottom: 0;
+  padding: 16px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  outline: none;
+  color: #181b3a;
 }
 .dasbord_laout{
   margin-top: 100px;
@@ -94,4 +100,9 @@ input[type="text"]{
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+.ql-container {
+  border: none !important;
 }

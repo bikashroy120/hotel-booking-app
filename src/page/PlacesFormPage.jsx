@@ -1,17 +1,16 @@
 import PhotosUploader from "../component/PhotosUploader";
 import Perks from "../component/Perks";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {Navigate, useNavigate, useParams} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { creactPlace } from "../services/place/placeSlice";
-import {IoMdArrowRoundBack} from "react-icons/io"
 import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export default function PlacesFormPage() {
   const dispatch =  useDispatch()
-  const {id} = useParams();
   const [title,setTitle] = useState('');
   const [address,setAddress] = useState('');
   const [addedPhotos,setAddedPhotos] = useState([]);
@@ -49,7 +48,7 @@ export default function PlacesFormPage() {
   }
   function inputDescription(text) {
     return (
-      <p className="text-gray-500 text-sm">{text}</p>
+      <p className=" text-[16px]">{text}</p>
     );
   }
   function preInput(header,description) {
@@ -71,46 +70,70 @@ export default function PlacesFormPage() {
   }
 
   const navigate =  useNavigate()
-  const Navegeted = ()=>{
-      navigate("/profile/places")
-  }
+
 
   useEffect(()=>{
     if(isSuccess && creactplace){
       toast.success("Place upload success")
-      navigate("/profile/places")
+      // navigate("/profile/places")
+      setTitle('')
+      setAddress('');
+      setAddedPhotos([]);
+      setDescription('');
+      setPerks([]);
+      setExtraInfo('');
+      setCheckIn('');
+      setCheckOut('');
+      setMaxGuests(1);
+      setPrice(100);
+      setCity('')
     }
 
     if(!isSuccess && isError){
       toast.error("shomthing is wrong")
     }
 
-  },[isSuccess,creactplace,isError])
+  },[isSuccess,creactplace,isError,navigate])
 
 
   return (
-    <div>
+    <div className="dashboard w-full">
       {/* <AccountNav /> */}
-      <div className='flex items-center justify-start mt-8'>
-            <button onClick={Navegeted} className='primary max-w-[200px] flex items-center justify-center gap-2'><IoMdArrowRoundBack className=' text-white'/>Back Plece</button>
-        </div>
       <form onSubmit={savePlace}>
         {preInput('Title', 'Title for your place. should be short and catchy as in advertisement')}
         <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder="title, for example: My lovely apt"/>
-        {preInput('Address', 'Address to this place')}
-        <input type="text" value={address} onChange={ev => setAddress(ev.target.value)}placeholder="address"/>
-        {preInput('City', 'City to this place')}
-        <input type="text" value={city} onChange={ev => setCity(ev.target.value)}placeholder="address"/>
+          <div className="flex items-center gap-5">
+            <div className="w-full">
+              {preInput('Address', 'Address to this place')}
+              <input type="text" value={address} onChange={ev => setAddress(ev.target.value)}placeholder="address"/>
+            </div>
+            <div className="w-full">
+                {preInput('City', 'City to this place')}
+                 <input type="text" value={city} onChange={ev => setCity(ev.target.value)}placeholder="address"/>
+            </div>
+          </div>
         {preInput('Photos','more = better')}
         <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
-        {preInput('Description','description of the place')}
-        <textarea value={description} onChange={ev => setDescription(ev.target.value)} />
+      <div className="h-[300px]">
+      {preInput('Description','description of the place')}
+        <ReactQuill
+            className="bg-white h-[250px] rounded-3xl border-none overflow-hidden pb-10 text-[18px]"
+            // theme="snow"
+            value={description}
+            onChange={setDescription}
+          />  
+      </div>
         {preInput('Perks','select all the perks of your place')}
         <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
           <Perks selected={perks} onChange={setPerks} />
         </div>
         {preInput('Extra info','house rules, etc')}
-        <textarea value={extraInfo} onChange={ev => setExtraInfo(ev.target.value)} />
+        <ReactQuill
+            className="bg-white h-[200px] overflow-hidden pb-10 text-[18px] rounded-3xl border-none"
+            // theme="snow"
+            value={extraInfo}
+            onChange={setExtraInfo}
+          />  
         {preInput('Check in&out times','add check in and out times, remember to have some time window for cleaning the room between guests')}
         <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           <div>
@@ -138,7 +161,8 @@ export default function PlacesFormPage() {
                    onChange={ev => setPrice(ev.target.value)}/>
           </div>
         </div>
-        <button type="submit" className="primary my-4">{isLoading ? (
+        <div className="my-5">
+        <button type="submit" className="primary my-6">{isLoading ? (
           <RotatingLines
           strokeColor="white"
           strokeWidth="5"
@@ -147,6 +171,7 @@ export default function PlacesFormPage() {
           visible={true}
         />
         ): ("Save")}</button>
+        </div>
       </form>
     </div>
   );

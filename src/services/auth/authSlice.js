@@ -7,8 +7,10 @@ const getUserfromLocalStorage = localStorage.getItem("user")
   : null;
 const initialState = {
   user: getUserfromLocalStorage,
+  profileData:{},
   isError: false,
   isLoading: false,
+  upLoading:false,
   isSuccess: false,
   message: "",
 };
@@ -29,6 +31,29 @@ export const login = createAsyncThunk(
     async (userData, thunkAPI) => {
       try {
         return await authService.login(userData);
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  );
+
+
+  export const getProfileData = createAsyncThunk(
+    "auth/getProfileData",
+    async (userData, thunkAPI) => {
+      try {
+        return await authService.getProfile();
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  );
+
+  export const updateProfileData = createAsyncThunk(
+    "auth/updateProfileData",
+    async (userData, thunkAPI) => {
+      try {
+        return await authService.updateProfile(userData);
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
       }
@@ -74,6 +99,39 @@ export const authSlice = createSlice({
           state.isSuccess = false;
           state.message = action.error;
           state.isLoading = false;
+        })
+
+        .addCase(getProfileData.pending, (state) => {
+          
+        })
+        .addCase(getProfileData.fulfilled, (state, action) => {
+          state.isError = false;
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.profileData = action.payload;
+          state.message = "success";
+        })
+        .addCase(getProfileData.rejected, (state, action) => {
+          state.isError = true;
+          state.isSuccess = false;
+          state.message = action.error;
+          state.isLoading = false;
+        })
+       .addCase(updateProfileData.pending, (state) => {
+          state.upLoading=true
+        })
+        .addCase(updateProfileData.fulfilled, (state, action) => {
+          state.isError = false;
+          state.upLoading = false;
+          state.isSuccess = true;
+          state.profileData = action.payload;
+          state.message = "success";
+        })
+        .addCase(updateProfileData.rejected, (state, action) => {
+          state.isError = true;
+          state.isSuccess = false;
+          state.message = action.error;
+          state.upLoading = false;
         })
     }
 })

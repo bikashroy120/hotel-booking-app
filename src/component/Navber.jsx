@@ -13,8 +13,10 @@ const Navber = () => {
     console.log(user)
 
   return (
-    <div className='flex items-center justify-between h-[80px]'>
-        <Link to={"/"} className='flex items-center text-[30px] font-bold'>
+    <div className='flex items-center w-full  h-[80px] shadow-lg'>
+        <div className="container_item w-full">
+            <div className='flex items-center justify-between w-full'>
+            <Link to={"/"} className='flex items-center text-[30px] font-bold'>
             <AiOutlineSend className=' mt-2'/>
             <h2>airbnb</h2>
         </Link>
@@ -40,6 +42,8 @@ const Navber = () => {
             </div>
             {user ? <h4>{user.username}</h4> : ""}
         </Link>
+            </div>
+        </div>
     </div>
   )
 }
