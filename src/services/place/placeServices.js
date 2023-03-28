@@ -12,7 +12,7 @@ const creactPlace = async (data) => {
 
 const getOwnerPlace = async () => {
   const response = await axios.get(`${base_url}/place/owner`,config);
-    return response.data;
+    return response.data.data;
 };
 
 const getPlace = async () => {
