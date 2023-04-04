@@ -25,6 +25,17 @@ const initialState = {
     }
   );
 
+  export const creactRoom = createAsyncThunk(
+    "room/creactRoom",
+    async (userData, thunkAPI) => {
+      try {
+        return await placeService.creactRoom(userData.id,userData.data);
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  );
+
 
   export const getOwnerPlace = createAsyncThunk(
     "place/getownerplace",
@@ -78,6 +89,22 @@ const initialState = {
           state.creactplace = action.payload;
         })
         .addCase(creactPlace.rejected, (state, action) => {
+          state.isError = true;
+          state.isSuccess = false;
+          state.message = action.error;
+          state.isLoading = false;
+        })
+        .addCase(creactRoom.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(creactRoom.fulfilled, (state, action) => {
+          state.isError = false;
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.message = "success";
+          state.creactroom = action.payload;
+        })
+        .addCase(creactRoom.rejected, (state, action) => {
           state.isError = true;
           state.isSuccess = false;
           state.message = action.error;

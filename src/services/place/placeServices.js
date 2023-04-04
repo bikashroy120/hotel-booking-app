@@ -25,12 +25,20 @@ const getSingalPlace = async (id) => {
   return response.data.data;
 }
 
+const creactRoom = async (id,data) => {
+  console.log(id)
+  const response = await axios.post(`${base_url}/rooms/${id}`, data,config);
+  console.log(response)
+    return response.data;
+};
+
 
 const placeService = {
     creactPlace,
     getOwnerPlace,
     getPlace,
     getSingalPlace,
+    creactRoom,
   };
   
   export default placeService;

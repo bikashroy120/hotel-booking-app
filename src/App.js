@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {getProfileData} from "./services/auth/authSlice"
 import Hotel from "./page/Hotel";
+import AddRoom from "./page/AddRoom";
+import EditRoom from "./page/EditRoom";
 
 function App() {
   const dispatch = useDispatch()
@@ -38,6 +40,8 @@ function App() {
               <Route index element={<Dashboard/>}/>
               <Route path="/owner/hotel" element={<Hotel/>}/>
               <Route path="/owner/add" element={<PlacesFormPage/>}/>
+              <Route path="/owner/add/place/:id" element={<AddRoom/>}/>
+              <Route path="/owner/edit/room/:id" element={<EditRoom/>}/>
               <Route path="/owner/user" element={<OwnerPro/>}/>
             </Route>
         </Routes>

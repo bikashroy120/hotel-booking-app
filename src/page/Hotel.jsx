@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import DataTableCommon from '../component/dashborad/DataTableCommon';
+import Modal1 from '../component/dashborad/Modal1';
 import {getOwnerPlace} from "../services/place/placeSlice"
 
 
@@ -10,6 +12,7 @@ const Hotel = () => {
 
     const {ownerPlace} = useSelector((state)=>state.place)
     const dispatch = useDispatch()
+    const navigate =  useNavigate()
     console.log(ownerPlace)
 
     useEffect(()=>{
@@ -19,12 +22,12 @@ const Hotel = () => {
     const columns = [
         {
             name: 'Img',
-            selector: row => <img src={row.imgUrl} className={"w-[50px] h-[50px]"}/>,
+            selector: row => <img src={`http://localhost:5000/uploads/${row.photos[0]}`} className={"w-[50px] h-[50px]"}/>,
         
         },
         {
             name:"Id",
-            selector: row => row.id,
+            selector: row => row._id,
         },
         {
             name: 'Title',
@@ -34,17 +37,10 @@ const Hotel = () => {
 
         {
             name:"Action",
-            cell:(row)=><button className='bg-red-400 text-white py-1 px-2'>Delete</button>, 
+            cell:(row)=> <div className='flex items-center gap-2'><button onClick={()=>navigate(`/owner/edit/room/${row._id}`)} className='bg-green-400 text-white py-1 px-2'>Edit</button>
+            <button className='bg-red-400 text-white py-1 px-2'>Delete</button></div>, 
         }
     ];
-
-
-
-    const category =[
-
-    ]
-
-
 
 
   return (
@@ -69,18 +65,22 @@ const Hotel = () => {
                             <h3>Guests: {item.maxGuests}</h3>
                         </div>
                         <div className='flex items-start flex-1 flex-col gap-2'>
-                            <button className='py-[8px] w-[200px] bg-orange-500 rounded-2xl'>Add Room</button>
+                            <button onClick={()=>navigate(`/owner/add/place/${item._id}`)} className='py-[8px] w-[200px] bg-orange-500 rounded-2xl'>Add Room</button>
                             <button className='py-[8px] w-[200px] bg-green-500 rounded-2xl'>View</button>
                             <button className='py-[8px] w-[200px] bg-red-500 rounded-2xl'>Delete Hotle</button>
                         </div>
                     </div>
-                    <div>
-                        <DataTableCommon columns={item.rooms} data={category}/>
+                    <div className='bg-black bg-opacity-70 p-5 rounded-3xl my-5'>
+                        <h2 className=' text-white text-[25px] font-bold'>Rooms :</h2>
+                        <DataTableCommon columns={columns} data={item.rooms}/>
                     </div>
                 </div>
                 )
             })
         }
+
+        <Modal1/>
+
     </div>
   ) 
 }
