@@ -19,7 +19,7 @@ const Hotel = () => {
 
     useEffect(()=>{
         dispatch(getOwnerPlace())
-    },[dispatch])
+    },[dispatch,show])
 
     const deletes = (id)=>{
         setShow(true)
@@ -73,7 +73,7 @@ const Hotel = () => {
                         </div>
                         <div className='flex items-start flex-1 flex-col gap-2'>
                             <button onClick={()=>navigate(`/owner/add/place/${item._id}`)} className='py-[8px] w-[200px] bg-orange-500 rounded-2xl'>Add Room</button>
-                            <button className='py-[8px] w-[200px] bg-green-500 rounded-2xl'>View</button>
+                            <button onClick={()=>navigate(`/owner/edit/place/${item._id}`)} className='py-[8px] w-[200px] bg-green-500 rounded-2xl'>View</button>
                             <button className='py-[8px] w-[200px] bg-red-500 rounded-2xl'>Delete Hotle</button>
                         </div>
                     </div>

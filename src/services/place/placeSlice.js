@@ -29,7 +29,7 @@ const initialState = {
     "room/creactRoom",
     async (userData, thunkAPI) => {
       try {
-        return await placeService.creactRoom(userData.id,userData.data);
+        return await placeService.updateRoom(userData.id,userData.data);
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
       }
@@ -65,6 +65,17 @@ const initialState = {
     async(id,thunkAPI)=>{
       try { 
           return await placeService.getSingalPlace(id)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  )
+
+  export const deleteRoom = createAsyncThunk(
+    "room/deleteRoom",
+    async(id,thunkAPI)=>{
+      try { 
+          return await placeService.deleteRoom(id)
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
       }
@@ -119,6 +130,7 @@ const initialState = {
           state.isSuccess = true;
           state.message = "success";
           state.ownerPlace = action.payload;
+          state.creactroom = null;
         })
         .addCase(getOwnerPlace.rejected, (state, action) => {
           state.isError = true;
@@ -158,6 +170,16 @@ const initialState = {
           state.isSuccess = false;
           state.message = action.error;
           state.isLoading = false;
+        })
+        .addCase(deleteRoom.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(deleteRoom.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.deleted=state.payload
+        })
+        .addCase(deleteRoom.rejected, (state, action) => {
+          state.isSuccess = false;
         })
     }
 })

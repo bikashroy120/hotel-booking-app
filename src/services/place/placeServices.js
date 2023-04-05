@@ -4,6 +4,7 @@ import { base_url } from "../../utils/baseUrl";
 
 
 
+
 const creactPlace = async (data) => {
   const response = await axios.post(`${base_url}/place`, data,config);
   console.log(response)
@@ -26,14 +27,17 @@ const getSingalPlace = async (id) => {
 }
 
 const creactRoom = async (id,data) => {
-  console.log(id)
   const response = await axios.post(`${base_url}/rooms/${id}`, data,config);
-  console.log(response)
+    return response.data;
+};
+
+const updateRoom = async (id,data) => {
+  const response = await axios.patch(`${base_url}/rooms/update/${id}`, data,config);
     return response.data;
 };
 
 const deleteRoom = async (id) => {
-  const response = await axios.post(`${base_url}/rooms/delete/${id}`,config);
+  const response = await axios.delete(`${base_url}/rooms/delete/${id}`,config);
   console.log(response)
     return response.data;
 };
@@ -46,6 +50,7 @@ const placeService = {
     getSingalPlace,
     creactRoom,
     deleteRoom,
+    updateRoom
   };
   
   export default placeService;

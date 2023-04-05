@@ -55,7 +55,7 @@ useEffect(() => {
         setMaxGuests(data.data.maxgest)
     });
   }, [id]);
-
+  console.log(addedPhotos)
     async function savePlace(ev) {
         ev.preventDefault();
         const data = {
