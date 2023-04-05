@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DataTableCommon from '../component/dashborad/DataTableCommon';
@@ -13,11 +13,18 @@ const Hotel = () => {
     const {ownerPlace} = useSelector((state)=>state.place)
     const dispatch = useDispatch()
     const navigate =  useNavigate()
+    const [show,setShow]=useState(false)
+    const [id,setID] = useState(null)
     console.log(ownerPlace)
 
     useEffect(()=>{
         dispatch(getOwnerPlace())
     },[dispatch])
+
+    const deletes = (id)=>{
+        setShow(true)
+        setID(id)
+    }
 
     const columns = [
         {
@@ -26,8 +33,8 @@ const Hotel = () => {
         
         },
         {
-            name:"Id",
-            selector: row => row._id,
+            name:"Room Number",
+            selector: row => row.roomNumber,
         },
         {
             name: 'Title',
@@ -37,14 +44,14 @@ const Hotel = () => {
 
         {
             name:"Action",
-            cell:(row)=> <div className='flex items-center gap-2'><button onClick={()=>navigate(`/owner/edit/room/${row._id}`)} className='bg-green-400 text-white py-1 px-2'>Edit</button>
-            <button className='bg-red-400 text-white py-1 px-2'>Delete</button></div>, 
+            cell:(row)=> <div className='flex items-center gap-2'><button onClick={()=>navigate(`/owner/edit/room/${row._id}`)} className='bg-green-400 text-black rounded-md py-1 px-2 shadow-xl'>Edit</button>
+            <button onClick={()=>deletes(row._id)} className='bg-red-400 text-black rounded-md shadow-xl py-1 px-2'>Delete</button></div>, 
         }
     ];
 
 
   return (
-    <div className="dashboard w-full">
+    <div className="dashboard w-full relative">
         <div>Hotel</div>
         {
             ownerPlace?.map((item,i)=>{
@@ -78,8 +85,10 @@ const Hotel = () => {
                 )
             })
         }
-
-        <Modal1/>
+        
+        {
+            show &&  <Modal1 id={id} setShow={setShow}/>
+        }
 
     </div>
   ) 

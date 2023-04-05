@@ -3,7 +3,7 @@
   width: 100%;
   top: 0;
   left: 250px;
-  z-index: 999;
+  z-index: 9;
   background: var(--primary-color);
   width: calc(100% - 260px);
   height: 70px;

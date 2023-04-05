@@ -32,6 +32,12 @@ const creactRoom = async (id,data) => {
     return response.data;
 };
 
+const deleteRoom = async (id) => {
+  const response = await axios.post(`${base_url}/rooms/delete/${id}`,config);
+  console.log(response)
+    return response.data;
+};
+
 
 const placeService = {
     creactPlace,
@@ -39,6 +45,7 @@ const placeService = {
     getPlace,
     getSingalPlace,
     creactRoom,
+    deleteRoom,
   };
   
   export default placeService;
