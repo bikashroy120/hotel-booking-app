@@ -25,6 +25,17 @@ const initialState = {
     }
   );
 
+  export const updatePlace = createAsyncThunk(
+    "place/updatePlace",
+    async (userData, thunkAPI) => {
+      try {
+        return await placeService.updatePlace(userData.id,userData.data);
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  );
+
   export const creactRoom = createAsyncThunk(
     "room/creactRoom",
     async (userData, thunkAPI) => {
@@ -81,6 +92,17 @@ const initialState = {
       }
     }
   )
+
+  export const deleteHotel = createAsyncThunk(
+    "place/deleteHotel",
+    async(id,thunkAPI)=>{
+      try { 
+          return await placeService.deleteHotal(id)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  )
   
 
   export const placeSlice = createSlice({
@@ -100,6 +122,22 @@ const initialState = {
           state.creactplace = action.payload;
         })
         .addCase(creactPlace.rejected, (state, action) => {
+          state.isError = true;
+          state.isSuccess = false;
+          state.message = action.error;
+          state.isLoading = false;
+        })
+        .addCase(updatePlace.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(updatePlace.fulfilled, (state, action) => {
+          state.isError = false;
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.message = "success";
+          state.creactplace = action.payload;
+        })
+        .addCase(updatePlace.rejected, (state, action) => {
           state.isError = true;
           state.isSuccess = false;
           state.message = action.error;
@@ -179,6 +217,15 @@ const initialState = {
           state.deleted=state.payload
         })
         .addCase(deleteRoom.rejected, (state, action) => {
+          state.isSuccess = false;
+        })
+        .addCase(deleteHotel.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(deleteHotel.fulfilled, (state, action) => {
+          state.isLoading = false;
+        })
+        .addCase(deleteHotel.rejected, (state, action) => {
           state.isSuccess = false;
         })
     }

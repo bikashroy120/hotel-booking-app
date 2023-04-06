@@ -3,16 +3,18 @@ import Perks from "../component/Perks";
 import {useEffect, useState} from "react";
 import { useNavigate, useParams} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { creactPlace } from "../services/place/placeSlice";
+import { updatePlace } from "../services/place/placeSlice";
 import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { base_url } from "../utils/baseUrl";
+import {BsBoxArrowLeft} from "react-icons/bs"
 
 export default function EditHHotel() {
   const dispatch =  useDispatch()
+  const navigate = useNavigate();
   const [title,setTitle] = useState('');
   const [address,setAddress] = useState('');
   const [addedPhotos,setAddedPhotos] = useState([]);
@@ -24,6 +26,7 @@ export default function EditHHotel() {
   const [maxGuests,setMaxGuests] = useState(1);
   const [price,setPrice] = useState(100);
   const [city,setCity] = useState('')
+  const [lodding,setLoadding] = useState(false)
   const {isError,isLoading,isSuccess,creactplace} = useSelector((state)=>state.place)
   const params =  useParams()
     const {id}=params;
@@ -32,6 +35,7 @@ export default function EditHHotel() {
     if (!id) {
       return;
     }
+    setLoadding(true)
     axios.get(`${base_url}/place/${id}`).then(response => {
        const {data} = response;
        setTitle(data.data.title);
@@ -45,6 +49,7 @@ export default function EditHHotel() {
        setMaxGuests(data.data.maxGuests);
        setPrice(data.data.price);
        setCity(data.data.city)
+       setLoadding(false)
     });
   }, [id]);
   function inputHeader(text) {
@@ -72,10 +77,14 @@ export default function EditHHotel() {
     const data ={
       title,address,photos:addedPhotos,description,perks,extraInfo,checkIn,checkOut,maxGuests,city,price
     }
-    dispatch(creactPlace(data))
-  }
 
-  const navigate =  useNavigate()
+    const obb = {
+      id:id,
+      data:data
+    }
+
+    dispatch(updatePlace(obb))
+  }
 
 
   useEffect(()=>{
@@ -89,9 +98,26 @@ export default function EditHHotel() {
 
   },[isSuccess,creactplace,isError,navigate])
 
+  if(lodding){
+    return(
+      <div className="dashboard w-full flex items-center justify-center h-[500px]">
+          <RotatingLines
+          strokeColor="red"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="80"
+          visible={true}
+        />
+      </div>
+    )
+  }
+
 
   return (
     <div className="dashboard w-full">
+      <div>
+        <button className="py-2 px-5 flex item-center gap-2 bg-orange-500 text-white  font-bold text-[20px] border-none outline-none rounded-md" onClick={()=>navigate(-1)}><BsBoxArrowLeft className="mt-1 font-bold"/> <span>Back</span></button>
+      </div>
       {/* <AccountNav /> */}
       <form onSubmit={savePlace}>
         {preInput('Title', 'Title for your place. should be short and catchy as in advertisement')}

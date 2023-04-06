@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import DataTableCommon from '../component/dashborad/DataTableCommon';
 import Modal1 from '../component/dashborad/Modal1';
 import {getOwnerPlace} from "../services/place/placeSlice"
+import { RotatingLines } from 'react-loader-spinner';
+import Modal2 from '../component/dashborad/Modal2';
 
 
 
@@ -14,7 +16,9 @@ const Hotel = () => {
     const dispatch = useDispatch()
     const navigate =  useNavigate()
     const [show,setShow]=useState(false)
+    const [hdshow,setHdShow] = useState(false)
     const [id,setID] = useState(null)
+    const [hotalId,setHHotalId] = useState(null)
     console.log(ownerPlace)
 
     useEffect(()=>{
@@ -24,6 +28,11 @@ const Hotel = () => {
     const deletes = (id)=>{
         setShow(true)
         setID(id)
+    }
+
+    const hotelDelts = (item)=>{
+        setHHotalId(item)
+        setHdShow(true)
     }
 
     const columns = [
@@ -50,6 +59,20 @@ const Hotel = () => {
     ];
 
 
+    if(ownerPlace.length === 0){
+        return(
+          <div className="dashboard w-full flex items-center justify-center h-[500px]">
+              <RotatingLines
+              strokeColor="red"
+              strokeWidth="5"
+              animationDuration="0.75"
+              width="80"
+              visible={true}
+            />
+          </div>
+        )
+      }
+
   return (
     <div className="dashboard w-full relative">
         <div>Hotel</div>
@@ -73,8 +96,8 @@ const Hotel = () => {
                         </div>
                         <div className='flex items-start flex-1 flex-col gap-2'>
                             <button onClick={()=>navigate(`/owner/add/place/${item._id}`)} className='py-[8px] w-[200px] bg-orange-500 rounded-2xl'>Add Room</button>
-                            <button onClick={()=>navigate(`/owner/edit/place/${item._id}`)} className='py-[8px] w-[200px] bg-green-500 rounded-2xl'>View</button>
-                            <button className='py-[8px] w-[200px] bg-red-500 rounded-2xl'>Delete Hotle</button>
+                            <button onClick={()=>navigate(`/owner/edit/place/${item._id}`)} className='py-[8px] w-[200px] bg-green-500 rounded-2xl'>Edit</button>
+                            <button onClick={()=>hotelDelts(item)} className='py-[8px] w-[200px] bg-red-500 rounded-2xl'>Delete Hotle</button>
                         </div>
                     </div>
                     <div className='bg-black bg-opacity-70 p-5 rounded-3xl my-5'>
@@ -88,6 +111,9 @@ const Hotel = () => {
         
         {
             show &&  <Modal1 id={id} setShow={setShow}/>
+        }
+        {
+            hdshow && <Modal2 item={hotalId} setHdShow={setHdShow}/>
         }
 
     </div>

@@ -8,6 +8,7 @@ import PhotosUploader from '../component/PhotosUploader';
 import { creactRoom } from '../services/place/placeSlice';
 import axios from "axios";
 import { base_url } from "../utils/baseUrl";
+import {BsBoxArrowLeft} from "react-icons/bs"
 
 const EditRoom = () => {
 
@@ -17,6 +18,7 @@ const EditRoom = () => {
     const [description,setDescription] = useState('');
     const [roomNumber,setRoomNumber] = useState()
     const [maxGuests,setMaxGuests] = useState()
+    const [lodding,setLoadding] = useState(false)
     const {isLoading,isSuccess,creactroom} = useSelector((state)=>state.place)
     const params =  useParams()
     const navigate =  useNavigate()
@@ -45,6 +47,7 @@ useEffect(() => {
     if (!id) {
       return;
     }
+    setLoadding(true)
     axios.get(`${base_url}/rooms/${id}`).then(response => {
        const {data} = response;
         console.log(data.data)
@@ -53,6 +56,7 @@ useEffect(() => {
         setDescription(data.data.description);
         setRoomNumber(data.data.roomNumber)
         setMaxGuests(data.data.maxgest)
+        setLoadding(false)
     });
   }, [id]);
   console.log(addedPhotos)
@@ -61,9 +65,6 @@ useEffect(() => {
         const data = {
           title,description,photos:addedPhotos,roomNumber,maxGuests
         }
-
-        console.log(data)
-
         const ddd = {
           id:id,
           data:data
@@ -77,8 +78,25 @@ useEffect(() => {
         }
       },[isSuccess,creactroom])
 
+      if(lodding){
+        return(
+          <div className="dashboard w-full flex items-center justify-center h-[500px]">
+              <RotatingLines
+              strokeColor="red"
+              strokeWidth="5"
+              animationDuration="0.75"
+              width="80"
+              visible={true}
+            />
+          </div>
+        )
+      }
+
   return (
     <div className='dashboard w-full'>
+            <div>
+        <button className="py-2 px-5 flex item-center gap-2 bg-orange-500 text-white  font-bold text-[20px] border-none outline-none rounded-md" onClick={()=>navigate(-1)}><BsBoxArrowLeft className="mt-1 font-bold"/> <span>Back</span></button>
+      </div>
         <form onSubmit={savePlace}>
             <div className='mb-5'>
                 {preInput('Title', 'Title for your place. should be short and catchy as in advertisement')}

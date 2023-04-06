@@ -36,8 +36,20 @@ const updateRoom = async (id,data) => {
     return response.data;
 };
 
+
+const updatePlace = async (id,data) => {
+  const response = await axios.patch(`${base_url}/place/update/${id}`, data,config);
+    return response.data;
+};
+
 const deleteRoom = async (id) => {
   const response = await axios.delete(`${base_url}/rooms/delete/${id}`,config);
+  console.log(response)
+    return response.data;
+};
+
+const deleteHotal = async (id) => {
+  const response = await axios.delete(`${base_url}/place/delete/${id}`,config);
   console.log(response)
     return response.data;
 };
@@ -45,7 +57,9 @@ const deleteRoom = async (id) => {
 
 const placeService = {
     creactPlace,
+    updatePlace,
     getOwnerPlace,
+    deleteHotal,
     getPlace,
     getSingalPlace,
     creactRoom,

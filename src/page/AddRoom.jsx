@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PhotosUploader from '../component/PhotosUploader';
 import { creactRoom } from '../services/place/placeSlice';
+import {BsBoxArrowLeft} from "react-icons/bs"
 
 const AddRoom = () => {
 
@@ -61,6 +62,9 @@ const AddRoom = () => {
 
   return (
     <div className='dashboard w-full'>
+              <div>
+        <button className="py-2 px-5 flex item-center gap-2 bg-orange-500 text-white  font-bold text-[20px] border-none outline-none rounded-md" onClick={()=>navigate(-1)}><BsBoxArrowLeft className="mt-1 font-bold"/> <span>Back</span></button>
+      </div>
         <form onSubmit={savePlace}>
             <div className='mb-5'>
                 {preInput('Title', 'Title for your place. should be short and catchy as in advertisement')}

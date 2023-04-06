@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import {BsBoxArrowLeft} from "react-icons/bs"
 
 export default function PlacesFormPage() {
   const dispatch =  useDispatch()
@@ -98,6 +99,9 @@ export default function PlacesFormPage() {
 
   return (
     <div className="dashboard w-full">
+        <div>
+        <button className="py-2 px-5 flex item-center gap-2 bg-orange-500 text-white  font-bold text-[20px] border-none outline-none rounded-md" onClick={()=>navigate(-1)}><BsBoxArrowLeft className="mt-1 font-bold"/> <span>Back</span></button>
+      </div>
       {/* <AccountNav /> */}
       <form onSubmit={savePlace}>
         {preInput('Title', 'Title for your place. should be short and catchy as in advertisement')}
