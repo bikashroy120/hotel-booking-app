@@ -8,6 +8,7 @@ import OwnerDetels from '../component/singalPage/OwnerDetels'
 import PlaceGallery from '../component/singalPage/PlaceGallery'
 import { getSingalPlace } from '../services/place/placeSlice'
 import {AiFillStar} from "react-icons/ai"
+import AbaleRoom from '../component/singalPage/AbaleRoom'
 
 const SingalPlace = () => {
 
@@ -15,13 +16,11 @@ const SingalPlace = () => {
     const {singalPlace,isLoading} = useSelector((state)=>state.place)
     const params =useParams() 
     
-       console.log(params)
 
     useEffect(()=>{
       dispatch(getSingalPlace(params.id))
     },[])
   
-    console.log(singalPlace)
 
     if(singalPlace === undefined){
         return(
@@ -49,9 +48,16 @@ const SingalPlace = () => {
             <OwnerDetels singalPlace={singalPlace && singalPlace}/>
         </div>
         <div className='w-[100%] h-[1px] my-7 bg-gray-400'></div>
+        <div>
+          <AbaleRoom rooms={singalPlace.rooms}/>
+        </div>
+        <div className='w-[100%] h-[1px] my-7 bg-gray-400'></div>
         <div className="my-4">
           <h2 className="font-semibold text-2xl">Description</h2>
-          {singalPlace?.description}
+          <div
+              className=' [$>h2]:text-[35px] [$>h3]:text-[30px] [$>h4]:text-[20px]'
+              dangerouslySetInnerHTML={{__html: singalPlace?.description}}
+            />
         </div>
         <div className='w-[100%] h-[1px] my-7 bg-gray-400'></div>
         <div className=''>
@@ -68,7 +74,12 @@ const SingalPlace = () => {
       <div>
         <h2 className="font-semibold text-2xl">Extra info</h2>
       </div>
-      <div className="mb-4 mt-2 text-sm text-gray-700 leading-5">{singalPlace.extraInfo}</div>
+      <div className="mb-4 mt-2 text-sm text-gray-700 leading-5">
+        
+      <div
+      dangerouslySetInnerHTML={{__html: singalPlace.extraInfo}}
+    />
+    </div>
     </div>
   </div>
   )
