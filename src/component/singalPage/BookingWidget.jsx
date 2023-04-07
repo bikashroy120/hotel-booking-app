@@ -8,6 +8,7 @@ export default function BookingWidget({place}) {
   const [checkIn,setCheckIn] = useState('');
   const [checkOut,setCheckOut] = useState('');
   const [numberOfGuests,setNumberOfGuests] = useState(1);
+  const [itemNumber,setItemNumber] = useState([])
   const [name,setName] = useState('');
   const [phone,setPhone] = useState('');
   const [redirect,setRedirect] = useState('');
@@ -38,8 +39,11 @@ export default function BookingWidget({place}) {
 //     return <Navigate to={redirect} />
 //   }
 
+
+console.log(itemNumber)
+
   return (
-    <div className="bg-white shadow-xl p-4 rounded-2xl">
+    <div className=" bg-slate-400 shadow-xl p-4 rounded-2xl sticky top-[20px]">
       <div className="text-2xl text-center">
         Price: ${place.price} / per night
       </div>
@@ -47,32 +51,50 @@ export default function BookingWidget({place}) {
         <div className="flex">
           <div className="py-3 px-4">
             <label>Check in:</label>
-            <input type="date"
+            <input type="date" className=" bg-transparent"
                    value={checkIn}
                    onChange={ev => setCheckIn(ev.target.value)}/>
           </div>
           <div className="py-3 px-4 border-l">
             <label>Check out:</label>
-            <input type="date" value={checkOut}
+            <input type="date" value={checkOut} className=" bg-transparent"
                    onChange={ev => setCheckOut(ev.target.value)}/>
           </div>
         </div>
-        <div className="py-3 px-4 border-t">
+        {/* <div className="py-3 px-4 border-t">
           <label>Number of guests:</label>
           <input type="number"
                  value={numberOfGuests}
                  onChange={ev => setNumberOfGuests(ev.target.value)}/>
-        </div>
+        </div> */}
         {numberOfNights > 0 && (
-          <div className="py-3 px-4 border-t">
+          <div >
+
+            <div className="py-3 px-4 border-t">
+              <h2>select room :</h2>
+            <div className="grid grid-cols-3 justify-between">
+                {
+                  place.rooms.map((item,i)=>{
+                    return(
+                      <div key={i}>
+                        <label className=" flex gap-2 items-center cursor-pointer">
+                          <input type="checkbox"  name={item._id} value={item.Id} onChange={(e)=>setItemNumber(e.target.value)}/>
+                          <span>{item.roomNumber}</span>
+                        </label>
+                      </div>
+                    )
+                  })
+                }
+            </div>
+            </div>
+
+
+            <div className="py-3 px-4 border-t">
             <label>Your full name:</label>
             <input type="text"
                    value={name}
                    onChange={ev => setName(ev.target.value)}/>
-            <label>Phone number:</label>
-            <input type="tel"
-                   value={phone}
-                   onChange={ev => setPhone(ev.target.value)}/>
+          </div>
           </div>
         )}
       </div>

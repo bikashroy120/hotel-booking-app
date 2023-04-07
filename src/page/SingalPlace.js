@@ -66,7 +66,7 @@ const SingalPlace = () => {
         </div>
 
       </div>
-      <div>
+      <div className=''>
         <BookingWidget place={singalPlace && singalPlace} />
       </div>
     </div>
