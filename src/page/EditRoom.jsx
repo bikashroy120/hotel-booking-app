@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PhotosUploader from '../component/PhotosUploader';
-import { creactRoom } from '../services/place/placeSlice';
+import { updateRoom } from '../services/place/placeSlice';
 import axios from "axios";
 import { base_url } from "../utils/baseUrl";
 import {BsBoxArrowLeft} from "react-icons/bs"
@@ -69,7 +69,7 @@ useEffect(() => {
           id:id,
           data:data
         }
-        dispatch(creactRoom(ddd))
+        dispatch(updateRoom(ddd))
       }
 
       useEffect(()=>{

@@ -40,6 +40,17 @@ const initialState = {
     "room/creactRoom",
     async (userData, thunkAPI) => {
       try {
+        return await placeService.creactRoom(userData.id,userData.data);
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  );
+
+  export const updateRoom = createAsyncThunk(
+    "room/updateRoom",
+    async (userData, thunkAPI) => {
+      try {
         return await placeService.updateRoom(userData.id,userData.data);
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
@@ -154,6 +165,23 @@ const initialState = {
           state.creactroom = action.payload;
         })
         .addCase(creactRoom.rejected, (state, action) => {
+          state.isError = true;
+          state.isSuccess = false;
+          state.message = action.error;
+          state.isLoading = false;
+        })
+
+        .addCase(updateRoom.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(updateRoom.fulfilled, (state, action) => {
+          state.isError = false;
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.message = "success";
+          state.creactroom = action.payload;
+        })
+        .addCase(updateRoom.rejected, (state, action) => {
           state.isError = true;
           state.isSuccess = false;
           state.message = action.error;

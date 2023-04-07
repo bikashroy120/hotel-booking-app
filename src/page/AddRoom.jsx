@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { RotatingLines } from 'react-loader-spinner';
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill"; 
 import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PhotosUploader from '../component/PhotosUploader';
-import { creactRoom } from '../services/place/placeSlice';
+import { creactRoom, getOwnerPlace } from '../services/place/placeSlice';
 import {BsBoxArrowLeft} from "react-icons/bs"
 
 const AddRoom = () => {
@@ -39,6 +39,8 @@ const AddRoom = () => {
         );
       }
 
+      console.log(addedPhotos)
+
     async function savePlace(ev) {
         ev.preventDefault();
         const data = {
@@ -52,6 +54,7 @@ const AddRoom = () => {
           data:data
         }
         dispatch(creactRoom(ddd))
+        dispatch(getOwnerPlace())
       }
 
       useEffect(()=>{

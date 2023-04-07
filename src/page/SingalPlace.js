@@ -41,7 +41,7 @@ const SingalPlace = () => {
         <AddressLink>{singalPlace?.address}</AddressLink>
     </div>
     <PlaceGallery place={singalPlace && singalPlace} />
-    <div className="mt-8 mb-8 grid gap-14 grid-cols-1 md:grid-cols-[2fr_1fr]">
+    <div className="mt-8 mb-8 grid gap-14 grid-cols-1 lg:grid-cols-[2fr_1fr]">
       <div>
 
         <div>
